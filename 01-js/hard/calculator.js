@@ -16,6 +16,128 @@
   Once you've implemented the logic, test your code by running
 */
 
-class Calculator {}
+class Calculator {
+  constructor(){
+    this.result = 0;
+  }
+  add(number){
+    this.result+=number;
+  }
+  subtract(number){
+    this.result-=number;
+  }
+  multiply(number){
+    this.result*=number;
+  }
+  divide(number){
+    if(number===0){
+      throw new Error();
+    }
+    this.result/=number;
+  }
+  clear(){
+    this.result =0;
+  }
+  getResult(){
+    return this.result;          
+  }
+  calculate(str){
+    const format = /[a-zA-Z]+/;
+    if(format.test(str)){
+      throw new Error();
+    }
+    str = str.replaceAll(' ','');
+    str = str.split('')
+    //check if string has invlaid letter throw error
+    let operator = [];
+    let operand = [];
+  
+    function priority(str){
+      if(str=='*' || str=='/' ) return 2;
+      if(str=='+' || str=='-' ) return 1;
+      
+    } 
+  
+    function cal(num1,num2,op){
+      num1 = parseInt(num1)
+      num2 = parseInt(num2)
+      switch (op) {
+          case "*":
+          return num1*num2;        
+          break;
+  
+          case "/":
+          return num2/num1;        
+          break;
+  
+          case "+":
+          return num1+num2;        
+          break;
+  
+          case "-":
+          return num2-num1;        
+          break;
+      
+        default:
+          break;
+      }
+    }
+  
+        while(true){
+        if(str[0]=='*' ||str[0]=='/' ||str[0]=='+' ||str[0]=='-' ||str[0]=='('||str[0]==')'){
+  
+            if(str[0]==')' && operand.length>0){
+              str.shift()
+              let num1 = operand.pop()
+              let num2 = operand.pop()
+              let op = operator.pop()
+              operand.push(cal(num1,num2,op));
+              operator.pop()
+              
+            }
+            else if(operand.length==0 && str[0]==')'){
+              throw new Error("Invalid closing paranthesis")
+            }
+           
+            if(operator.length==0){
+              operator.push(str.shift());
+            }
+            else if(priority(operator[operator.length-1])<= priority(str[0]) || operator[operator.length-1] =="("){ 
+              operator.push(str.shift());
+            }
+            else{
+              let num1 = operand.pop()
+              let num2 = operand.pop()
+              let op = operator.pop()
+              operand.push(cal(num1,num2,op));
+              
+            }
+        }
+        else{
+          operand.push(str.shift());
+        }
+  
+  
+        if(str.length==0){
+          break;
+        }
+  
+      }
+  
+      while(operator.length>0){
+      
+      let num1 = operand.pop()
+      let num2 = operand.pop()
+      let op = operator.pop()
+      operand.push(cal(num1,num2,op));
+  
+      }
+      return operand.pop();
+  
+    
+  
+      
+  }
+}
 
 module.exports = Calculator;
