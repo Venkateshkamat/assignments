@@ -12,9 +12,27 @@ const app = express();
 // clears every one second
 
 let numberOfRequestsForUser = {};
+
 setInterval(() => {
     numberOfRequestsForUser = {};
+    
 }, 1000)
+
+app.use((req,res,next)=>{
+  
+  const id = req.headers['user-id'];
+  if(numberOfRequestsForUser.hasOwnProperty(id)){
+    numberOfRequestsForUser[id]++
+  }
+  else{
+    numberOfRequestsForUser[id]=1;
+  }
+  if(numberOfRequestsForUser[id]>5){
+    return res.status(404).json()
+  }
+  next()
+
+})
 
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });
@@ -24,4 +42,5 @@ app.post('/user', function(req, res) {
   res.status(200).json({ msg: 'created dummy user' });
 });
 
+// app.listen(3000)
 module.exports = app;
