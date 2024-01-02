@@ -11,12 +11,12 @@ app.use(bodyParser.json());
 app.use("/admin", adminRouter)
 app.use("/user", userRouter)
 
-//global catch
-// app.use((err,req,res,next)=>{
-//     if(err){
-//         res.status(500).send("Caught by global catch");
-//     }
-// })
+// global catch
+app.use((err,req,res,next)=>{
+    if(err){
+        res.status(500).send("Caught by global catch");
+    }
+})
 
 
 const PORT = 3000;
