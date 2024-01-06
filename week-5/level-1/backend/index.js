@@ -13,7 +13,9 @@ app.use(cors());
 app.get("/cards",async (req,res)=>{
     //get all cards logic
     const cards = await Card.find()
-    res.json(cards)
+    res.json({
+        cards
+    })
 })
 
 app.post("/card",async (req,res)=>{
