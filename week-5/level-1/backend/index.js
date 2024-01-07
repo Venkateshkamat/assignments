@@ -53,7 +53,27 @@ app.post("/card",async (req,res)=>{
 
 })
 
+app.post("/deleteCard",async (req,res)=>{
 
+    try{
+        const id = req.body.id;
+        await Card.findByIdAndDelete(id);
+        res.json({
+            msg:"deleted todo item"
+        })
+    }
+    catch(e){
+        res.json({
+            msg:"Could not delete",
+            e
+        })
+    }
+    
+
+
+})
+
+//globla catch
 app.use((err,req,res,next)=>{
     if(err){
         res.status(500).json({
@@ -61,6 +81,7 @@ app.use((err,req,res,next)=>{
             err
         })
     }
+    next()
 })
 
 app.listen(3000,()=>{
