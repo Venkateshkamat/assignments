@@ -23,6 +23,8 @@ app.post("/card",async (req,res)=>{
     try{
         const payload = req.body;
         const safepayload = createCard.safeParse(payload)
+        payload.interests = payload.interests[0].split(" ")
+        console.log(payload.interests);
         
         if(safepayload.success){
             const card = new Card({
