@@ -1,4 +1,19 @@
-export function BusinessCard({bCard}) {
+import { useEffect, useState } from 'react'
+
+
+export function BusinessCard() {
+
+
+  const [bCard,setbCard] = useState([])
+
+  useEffect(()=>{
+      fetch("http://localhost:3000/cards").then(async (res)=>{
+      const json = await res.json()
+      setbCard(json.cards);
+      })
+  },[]);
+
+
     let count=1;
     return <div style={styles.card}>
         {bCard.map((card)=>{
@@ -22,6 +37,27 @@ export function BusinessCard({bCard}) {
                         Twitter
                     </a>
                 </div>
+                <button onClick={async ()=>{
+                  //write delete logic
+                  await fetch("http://localhost:3000/deleteCard",{
+                    method:"POST",
+                    body:JSON.stringify({
+                      id:card["_id"]
+                    }),
+                    headers:{
+                      "content-type":"application/json"
+                    }
+                  })
+                  alert("Todo deleted")
+                  
+                  // useEffect(()=>{
+                    fetch("http://localhost:3000/cards").then(async (res)=>{
+                    const json = await res.json()
+                    setbCard(json.cards);
+                    })
+                  // },[]);
+                  
+                }} style={styles.button}>Delete</button>
                 <hr />
             </div>
         })}
@@ -78,4 +114,15 @@ const styles = {
       marginBottom: '5px',
       color: '#555',
     },
+    button:{
+      textDecoration: 'none',
+      color: '#fff', // Text color
+      padding: '10px 15px', // Padding for the button
+      borderRadius: '8px', // Border radius for rounded corners
+      backgroundColor: '#379683', // Background color for the button
+      display: 'inline-block', // Display as inline-block to be side by side
+      marginLeft: 0, // Margin between buttons
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Box shadow for a subtle lift
+      border: 0
+    }
   };

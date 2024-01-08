@@ -8,11 +8,13 @@ import {
 
 import './index.css'
 import { CreateCard } from './components/CreateCard.jsx';
+import { ErrorPage } from './components/ErrorPage.jsx';
 
 const router = createBrowserRouter([
   {
     path:"/",
-    element: <App />
+    element: <App />,
+    errorElement:<ErrorPage/>
   },
   {
     path:"/create",
